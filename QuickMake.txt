@@ -1,0 +1,89 @@
+--------------------------------------------------------------------------------------------
+Future Days Differnce 
+--------------------------------------------------------------------------------------------
+$date = $exp_date;
+$today = date('Y/m/d');
+$today = new DateTime($today);
+$finish = $date; // MAKE SURE THIS IS m/d/Y or Y/m/d
+$finish = new DateTime($finish);
+
+// diference
+
+$diff = $finish->diff($today);
+$daysleft = $diff->format('%a'); // %a modifier means total days
+echo "$daysleft days left\n";
+
+
+--------------------------------------------------------------------------------------------
+Include WP function in plugin standalone file
+--------------------------------------------------------------------------------------------
+
+$parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
+require_once( $parse_uri[0] . 'wp-load.php' );
+
+
+--------------------------------------------------------------------------------------------
+Add JS or CSS Files from pkugin or theme file
+--------------------------------------------------------------------------------------------
+
+function wpb_adding_scripts() {
+wp_register_script('custom', plugins_url('/js/custom.js', __FILE__), array('jquery'),'1.1', true);
+wp_enqueue_style( 'main', plugins_url('/assets-fedex/css/main.css', __FILE__));
+wp_enqueue_script('custom');
+}
+add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' );  	
+
+--------------------------------------------------------------------------------------------
+Make Sure atleast two checkboxes are checked jquery
+--------------------------------------------------------------------------------------------
+
+	  $('input[type=checkbox].selected_products').change(function() {
+	      //alert($('input[type=checkbox].selected_products:checked').size())
+	      if ($('input[type=checkbox].selected_products:checked').size() > 1) {
+	          $(".isclub_area").show();
+	      } else {
+	          $('.isclub_area').hide();
+	      }
+
+	      if ($('input[type=checkbox].selected_products:checked').size() == 0) {
+	          $("#error_p").show();
+	      } else {
+	          $("#error_p").hide();
+	      }
+	  });
+
+--------------------------------------------------------------------------------------------
+Get the Sub menu of current page wordpress
+--------------------------------------------------------------------------------------------
+
+<?php
+$post       = get_post();
+$section_id = empty($post->ancestors) ? $post->ID : end($post->ancestors);
+$locations  = get_nav_menu_locations();
+$menu       = wp_get_nav_menu_object($locations['primary']); // 'primary' is our nav menu's name
+$menu_items = wp_get_nav_menu_items($menu->term_id, array(
+    'post_parent' => $section_id
+));
+if (!empty($menu_items)) {
+    echo '<ul class="section-submenu">';
+    foreach ($menu_items as $menu_item) {
+        echo '<li><a href="' . $menu_item->url . '">' . $menu_item->title . '</a></li>';
+    }
+    echo '</ul>';
+}
+?>
+
+--------------------------------------------------------------------------------------------
+Disable wordpress plugin Update
+--------------------------------------------------------------------------------------------
+
+/* Stop update plugin */
+function filter_plugin_updates( $value ) {
+    unset( $value->response['accelerated-mobile-pages/accelerated-moblie-pages.php'] );
+    return $value;
+}
+add_filter( 'site_transient_update_plugins', 'filter_plugin_updates' );
+
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
