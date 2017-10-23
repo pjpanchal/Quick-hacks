@@ -87,3 +87,33 @@ add_filter( 'site_transient_update_plugins', 'filter_plugin_updates' );
 --------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------
+Add Customisation Color Option under Appereance
+--------------------------------------------------------------------------------------------
+
+function starter_customize_register( $wp_customize ) 
+{
+    $wp_customize->add_section( 'starter_new_section_name' , array(
+        'title'    => __( 'Colors for Home Featured Blocks', 'grace_theme_layout' ),
+        'priority' => 30
+    ) );   
+
+	/* First Block */
+    $wp_customize->add_setting( 'first_round_color' , array(
+        'default'   => '#000000',
+        'transport' => 'refresh',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'first_round_color', array(
+        'label'    => __( 'First Round Color', 'grace_theme_layout' ),
+        'section'  => 'starter_new_section_name',
+        'settings' => 'first_round_color',
+    ) ) );	
+}
+add_action( 'customize_register', 'starter_customize_register');
+
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
