@@ -1,4 +1,46 @@
 --------------------------------------------------------------------------------------------
+/* Search Orders by customer ID */
+--------------------------------------------------------------------------------------------
+
+function apply_my_custom_product_filters( $query ) {
+global $pagenow;
+	if ( $query->is_admin && $pagenow == 'edit.php' && isset( $_GET['my_filter'] ) && $_GET['my_filter'] != '' && $_GET['post_type'] == 'shop_order' ) {
+
+	  // Create meta query array and add to WP_Query
+	  $meta_key_query = array(
+	    array(
+	      'key'     => '_customer_user',
+	      'value'   => esc_attr( $_GET['my_filter'] ),
+	    )
+	  );
+	  $query->set( 'meta_query', $meta_key_query );
+
+	}
+}
+add_action( 'pre_get_posts', 'apply_my_custom_product_filters' );
+
+
+
+function my_custom_product_filters( $post_type ) {
+	$value1 = '';
+	if( isset( $_GET['my_filter'] ) ) {
+	      $value1 = $_GET['my_filter'] ;
+	}
+
+	// Check this is the products screen
+	if( $post_type == 'shop_order' ) 
+	{
+	  echo '<input type="text" name="my_filter" placeholder="Search by ID" value="'.$value1.'">';
+	}
+}
+add_action( 'restrict_manage_posts', 'my_custom_product_filters' );
+
+--------------------------------------------------------------------------------------------
+/* End Search Orders by customer ID */
+--------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------
 Future Days Differnce 
 --------------------------------------------------------------------------------------------
 $date = $exp_date;
