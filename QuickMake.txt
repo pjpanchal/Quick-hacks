@@ -199,3 +199,42 @@ add_action( 'customize_register', 'starter_customize_register');
 --------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+Smooth scroll with # anchor links 
+--------------------------------------------------------------------------------------------
+
+<script type="text/javascript">
+jQuery(document).ready(function( $ ) {
+
+	setTimeout(function() {
+	    if (location.hash) {
+	      window.scrollTo(0, 0);
+	      target = location.hash.split('#');
+	      smoothScrollTo($('#'+target[1]));
+	    }
+	  }, 1);
+  
+	  // taken from: https://css-tricks.com/snippets/jquery/smooth-scrolling/
+	  $('a[href*=#]:not([href=#])').click(function() {
+	    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	      smoothScrollTo($(this.hash));
+	      return false;
+	    }
+	  });
+  
+	  function smoothScrollTo(target) {
+	    target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	    
+	    if (target.length) {
+	      $('html,body').animate({
+	        scrollTop: target.offset().top - 100
+	      }, 1000);
+	    }
+	  }	
+});
+</script>
+
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
